@@ -7,11 +7,12 @@ on:
         required: true
         type: choice
         description: Flutter variant
-        default: 'release'
+        default: 'stable'
         options: 
         - stable
         - beta
         - dev
+        - master
       app-variant:
         required: true
         type: choice
@@ -23,7 +24,7 @@ on:
         - profile
       pr-number:
         required: true
-        description: Pull Request number to build from (No hashtag)
+        description: PR number (No hashtag)
         
 permissions:
   contents: read
@@ -32,9 +33,12 @@ permissions:
 jobs:
   build:
     name: Build
+    continue-on-error: true
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
+        env: 
+          GH_TOKEN: ${{ github.token }}
         run: |
           gh repo clone ReVanced/revanced-manager
           gh pr checkout ${{ inputs.pr-number }}
@@ -42,7 +46,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           persist-credentials: false
-          fetch-depth: 0
       - name: Setup JDK
         uses: actions/setup-java@v3
         with:
@@ -61,15 +64,14 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          if flutter build apk --${{ inputs.app-variant }}; then
-            echo "::set-env name=message::Build Success!"
-          else
-            echo "::set-env name=message::Build Fail!"
-          fi
+          flutter build apk --${{ inputs.app-variant }};
+      - name: Set env
+        run: |
+          echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
       - name: Upload build
         uses: actions/upload-artifact@v3
         with:
-          name: revanced-manager-P${{ inputs.pr-number }}-B${{ inputs.app-variant }}-F${{ inputs.flutter-variant }}
+          name: revanced-manager-${{ env.COMMIT_HASH }}-${{ inputs.pr-number }}-${{ inputs.app-variant }}-${{ inputs.flutter-variant }}
           path: build/app/outputs/flutter-apk/app-debug.apk
           
   notify-pull-request:
@@ -77,37 +79,23 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Message
-        id: create-message
+      - name: Set env
         run: |
+          echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           if [[ "${{ needs.build.outputs.build_status }}" == "success" ]]; then
-            echo "message=✅ Build Success!" >> $GITHUB_OUTPUT
+            echo "MESSAGE=✅ Build succeeded!" >> $GITHUB_OUTPUT
           else
-            echo "message=🚫 Build Fail!" >> $GITHUB_OUTPUT
+            echo "MESSAGE=🚫 Build failed!" >> $GITHUB_OUTPUT
           fi
-      - name: Comment on Pull Request ${{ inputs.pr-number }}
-        uses: actions/github-script@v6
+      - name: Comment to Pull Request #${{ inputs.pr-number }}
+        uses: thollander/actions-comment-pull-request@v2
         with:
-          script: |
-            const message = process.env.message;
-            const pr_number = "${{ inputs.pr-number }}";
-            const app_variant = "${{ inputs.app-variant }}";
-            const flutter_variant = "${{ inputs.flutter-variant }}";
-            const action_url = "${{ github.event.workflow_run.html_url }}";
-
-            const comment = `
-              ${message}
-
-              You can check the details [here](${action_url}).
-
-              - PR: ${pr_number}
-              - App variant: ${app_variant}
-              - Flutter variant: ${flutter_variant}
-            `;
-
-            github.issues.createComment({
-              issue_number: pr_number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: comment
-            });
+          GITHUB_TOKEN: ${{ secrets.PULL_REQUESTS_WRITE }}
+          message: |
+            ${{ env.MESSAGE }} @ ${{ env.COMMIT_HASH }}
+            
+            You can check the details [here](${{ github.event.workflow_run.html_url }}).
+  
+            - PR: ${{ inputs.pr-number }}
+            - App variant: ${{ inputs.app-variant }}
+            - Flutter variant: ${{ inputs.flutter-variant }}
