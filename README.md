@@ -1,5 +1,3 @@
-# Website
+# `> Template // Docusaurus 3`
 
-This website is built using [Docusaurus 2](https://docusaurus.io/), a modern static website generator.
-
-omg we are using react no way
+This website is built using [Docusaurus 3](https://docusaurus.io/), a modern static website generator.

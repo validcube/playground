@@ -1,13 +1,15 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
-const lightCodeTheme = require("prism-react-renderer/themes/github");
-const darkCodeTheme = require("prism-react-renderer/themes/dracula");
+// const lightCodeTheme = require("prism-react-renderer/themes/github");
+// const darkCodeTheme = require("prism-react-renderer/themes/dracula");
+
+import { themes as prismThemes } from 'prism-react-renderer';
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: "ReVanced",
-  tagline: "a",
+  tagline: "Continuing the legacy of Vanced",
   url: "https://docs.revanced.app",
   baseUrl: "/", // ig this could be used if we want to host it at https://revanced.app/docs
   onBrokenLinks: "throw",
@@ -16,7 +18,7 @@ const config = {
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: "revanced", // Usually your GitHub org/user name.
+  organizationName: "ReVanced", // Usually your GitHub org/user name.
   projectName: "revanced-docs", // Usually your repo name.
 
   // Even if you don't use internalization, you can use this field to set useful
@@ -72,7 +74,7 @@ const config = {
             label: "Patches",
           },
           {
-            href: "https://github.com/revanced/revanced-documentation",
+            href: "https://github.com/ReVanced/revanced-documentation",
             label: "GitHub",
             position: "right",
           },
@@ -110,13 +112,9 @@ const config = {
         ],
         copyright: `Copyright © ${new Date().getFullYear()} ReVanced maintainers. Built with Docusaurus.`,
       },
-      colorMode: {
-        defaultMode: "dark",
-        disableSwitch: true,
-        respectPrefersColorScheme: false,
-      },
       prism: {
-        theme: darkCodeTheme,
+        theme: prismThemes.github,
+        darkTheme: prismThemes.dracula,
         additionalLanguages: ["kotlin"],
       },
     }),

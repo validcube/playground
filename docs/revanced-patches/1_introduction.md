@@ -1,43 +1,55 @@
-# 💉 Introduction to the ReVanced patcher
+# 💉 Introduction to [ReVanced Patcher](https://github.com/revanced/revanced-patcher)
 
-Familiarize yourself with the [ReVanced patcher](https://github.com/revanced/revanced-patcher).
+Familiarize yourself with [ReVanced Patcher](https://github.com/revanced/revanced-patcher).
 
 ## 📙 How it works
 
 ```kt
-// Prepare patches to apply and files to merge
+/**
+ * Load ReVanced Patches and ReVanced Integrations.
+ *
+ * PatchBundleLoader can be used to load a list of patches from the supplied file in a new ClassLoader instance.
+ * You can set their options and supply them to ReVanced Patcher.
+ *
+ * Executing patches multiple times from the same ClassLoader instance may fail because they may not reset their state.
+ * Therefore, a new PatchBundleLoader should be used for every execution of ReVanced Patcher.
+ */
+val patches = PatchBundleLoader.Jar(File("revanced-patches.jar"))
+val integrations = listOf(File("integrations.apk"))
 
-val patches = PatchBundle.Jar("revanced-patches.jar").loadPatches()
-val mergeList = listOf("integrations.apk")
+/**
+ * Instantiate ReVanced Patcher with options.
+ * This will decode the app manifest of the input file to read package metadata
+ * such as package name and version code.
+ */
+val options = PatcherOptions(inputFile = File("some.apk"))
+Patcher(options).use { patcher ->
+    val patcherResult = patcher.apply {
+        acceptIntegrations(integrations)
+        acceptPatches(patches)
 
-// Create the options for the patcher
+        // Execute patches.
+        runBlocking {
+            patcher.apply(false).collect { patchResult ->
+                if (patchResult.exception != null)
+                    println("${patchResult.patchName} failed:\n${patchResult.exception}")
+                else
+                    println("${patchResult.patchName} succeeded")
+            }
+        }
+    }.get()
 
-val options = PatcherOptions(
-     inputFile = File("some.apk"),
-     resourceCacheDirectory = File("cache"),
-)
+    // Compile patched DEX files and resources.
+    val result = patcher.get()
 
-// Create the patcher and add the prepared patches and files
-
-val patcher = Patcher(options)
-    .also { it.addPatches(patches) }
-    .also { it.addFiles(mergeList) }
-
-// Execute and save the patched files
-
-patcher.executePatches().forEach { (patch, result) ->
-    val log = if (!result.isSuccess)
-        "failed"
-    else
-        "succeeded"
-    println("$patch $log")
+    val dexFiles = result.dexFiles // Patched DEX files.
+    val resourceFile = result.resourceFile // File containing patched resources.
+    val doNotCompress = result.doNotCompress // Files that should not be compressed.
 }
-
-val result = patcher.save()
 ```
 
 ## ⏭️ Whats next
 
-The next section will give you an understanding of a [ReVanced patch](https://github.com/revanced/revanced-patcher).
+The next section will give you an understanding of a patch.
 
-Continue: [🧩 Skeleton of a patch](skeleton)
+Continue: [🧩 Skeleton of a Patch](2_skeleton.md)

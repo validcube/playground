@@ -6,36 +6,27 @@
 
 /* You can override the default Infima variables here. */
 :root {
-  --ifm-color-primary: #2e8555;
-  --ifm-color-primary-dark: #29784c;
-  --ifm-color-primary-darker: #277148;
-  --ifm-color-primary-darkest: #205d3b;
-  --ifm-color-primary-light: #33925d;
-  --ifm-color-primary-lighter: #359962;
-  --ifm-color-primary-lightest: #3cad6e;
+  --ifm-color-primary: hsl(206, 100%, 35%);
+  --ifm-color-primary-dark: hsl(206, 100%, 33%);
+  --ifm-color-primary-darker: hsl(206, 100%, 31%);
+  --ifm-color-primary-darkest: hsl(206, 100%, 29%);
+  --ifm-color-primary-light: hsl(208, 29%, 33%);
+  --ifm-color-primary-lighter: hsl(208, 29%, 38%);
+  --ifm-color-primary-lightest: hsl(208, 29%, 43%);
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
-  --ifm-background-color: hsl(252, 10%, 11%);
 }
 
-/* } */
 /* For readability concerns, you should choose a lighter palette in dark mode. */
 [data-theme='dark'] {
-    --ifm-color-primary: #9fd5ff;
-    --ifm-color-primary-dark: hsl(206, 100%, 78%);
-    --ifm-color-primary-darker: hsl(206, 100%, 75%);
-    --ifm-color-primary-darkest: hsl(206, 100%, 72%);
-    --ifm-color-primary-light: hsl(208, 29%, 82%);
-    --ifm-color-primary-lighter: hsl(208, 29%, 88%);
-    --ifm-color-primary-lightest: hsl(208, 29%, 91%);
-    --ifm-navbar-background-color: hsl(240, 9%, 13.5%);
-    --ifm-background-color: hsl(252, 10%, 11%);
-  /* --ifm-color-primary: #25c2a0; */
-  /* --ifm-color-primary-dark: #21af90; */
-  /* --ifm-color-primary-darker: #1fa588; */
-  /* --ifm-color-primary-darkest: #1a8870; */
-  /* --ifm-color-primary-light: #29d5b0; */
-  /* --ifm-color-primary-lighter: #32d8b4; */
-  /* --ifm-color-primary-lightest: #4fddbf; */
+  --ifm-color-primary: hsl(206, 100%, 81%);
+  --ifm-color-primary-dark: hsl(206, 100%, 78%);
+  --ifm-color-primary-darker: hsl(206, 100%, 75%);
+  --ifm-color-primary-darkest: hsl(206, 100%, 72%);
+  --ifm-color-primary-light: hsl(208, 29%, 82%);
+  --ifm-color-primary-lighter: hsl(208, 29%, 88%);
+  --ifm-color-primary-lightest: hsl(208, 29%, 91%);
+  --ifm-navbar-background-color: hsl(240, 9%, 13%);
+  --ifm-background-color: hsl(252, 10%, 11%);
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }

@@ -1,0 +1,7 @@
+[submodule "docs/test/revanced-manager"]
+	path = docs/test/revanced-manager
+	url = git@github.com:ReVanced/revanced-manager.git
+[submodule "docs/test/revanced-patches"]
+	path = docs/test/revanced-patches
+	url = git@github.com:ReVanced/revanced-patches.git
+	branch = docs
