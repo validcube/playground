@@ -1,0 +1,27 @@
+name: Receive Dispatch and Pull Docs
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [docs]
+
+jobs:
+  pull-docs:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout the repository
+      uses: actions/checkout@v4
+
+    - name: Pull docs from rv-docs repository
+      run: |
+        git clone https://github.com/ReVanced/revanced-documentation rv-docs && cd rv-docs
+        git submodule update --init --recursive
+        cp -rfL docs/* ../../docs
+        cd ..
+        rm -rf rv-docs
+
+    - name: Push changes to origin
+      run: |
+        git add .
+        git commit -m "Updated docs"
+        git push origin master

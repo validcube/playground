@@ -1,0 +1,45 @@
+name: Receive Dispatch and Pull Docs
+
+on:
+  repository_dispatch:
+    # types: [docs]
+
+jobs:
+  pull-docs:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout the repository
+      uses: actions/checkout@v4
+
+    - name: Pull docs from rv-cli repository
+      run: |
+        git clone https://github.com/ReVanced/revanced-cli.git rv-cli
+        cd rv-cli
+        git checkout main
+        cp -rf docs/* ../docs/revanced-cli/
+        cd ..
+        rm -rf rv-cli
+
+    - name: Pull docs from rv-manager repository
+      run: |
+        git clone https://github.com/ReVanced/revanced-manager.git rv-manager
+        cd rv-manager
+        git checkout main
+        cp -rf docs/* ../docs/revanced-manager/
+        cd ..
+        rm -rf rv-manager
+
+    - name: Pull docs from rv-patches repository
+      run: |
+        git clone https://github.com/ReVanced/revanced-patches.git rv-patches
+        cd rv-patches
+        git checkout docs
+        cp -rf docs/* ../docs/revanced-patches/
+        cd ..
+        rm -rf rv-patches
+
+    - name: Push changes to origin
+      run: |
+        git add .
+        git commit -m "Updated docs"
+        git push origin master

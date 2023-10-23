@@ -1,0 +1,8 @@
+{
+  "label": "🧩 ReVanced Patches",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "description": "This guide teaches the fundamentals of [ReVanced patches](https://github.com/revanced/revanced-patches) and everything necessary to create your own patch from scratch."
+  }
+}
