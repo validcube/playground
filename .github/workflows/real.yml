@@ -5,6 +5,10 @@ on:
   repository_dispatch:
     types: [docs]
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   pull-docs:
     runs-on: ubuntu-latest
@@ -24,8 +28,8 @@ jobs:
 
     - name: Push changes to origin
       run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
+        git config --global user.email "action@github.com"
+        git config --global user.name "GitHub Action"
         git add .
         git commit -m "Updated docs"
         git push origin master
