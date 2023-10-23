@@ -17,11 +17,13 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Pull docs from rv-docs repository
-      run: | # cp -rfL docs/* ../docs fail?
+      run: | # cp -rfL docs/* ../docs fail? // cp -rf repositories/*/docs ../docs/*
         git clone https://github.com/ReVanced/revanced-documentation rv-docs && cd rv-docs
         git submodule update --init --recursive
 
-        cp -rf repositories/*/docs ../docs
+        for repo in repositories/*/; do
+          cp -rf "$repo/docs" "../docs/$(basename $repo)"
+        done
 
         cd ..
         rm -rf rv-docs
