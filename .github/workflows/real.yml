@@ -16,7 +16,7 @@ jobs:
       run: |
         git clone https://github.com/ReVanced/revanced-documentation rv-docs && cd rv-docs
         git submodule update --init --recursive
-        cp -rfL docs/* ../../docs
+        cp -rfL docs/* ../docs
         cd ..
         rm -rf rv-docs
 
