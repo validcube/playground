@@ -31,6 +31,7 @@ import app.revanced.manager.ui.viewmodel.SelectedAppInfoViewModel
 import dev.olshevski.navigation.reimagined.AnimatedNavHost
 import dev.olshevski.navigation.reimagined.NavBackHandler
 import dev.olshevski.navigation.reimagined.navigate
+import dev.olshevski.navigation.reimagined.*
 import dev.olshevski.navigation.reimagined.pop
 import dev.olshevski.navigation.reimagined.popUpTo
 import dev.olshevski.navigation.reimagined.rememberNavController
