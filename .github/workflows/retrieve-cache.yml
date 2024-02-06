@@ -2,9 +2,9 @@ name: Upload cache
 
 on:
   workflow_dispatch:
-  inputs:
-    cache:
-      required: true
+    inputs:
+      cache:
+        required: true
 
 jobs:
   build:
