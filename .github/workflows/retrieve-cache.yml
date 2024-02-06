@@ -1,0 +1,27 @@
+name: Upload cache
+
+on:
+  workflow_dispatch:
+  inputs:
+    cache:
+      required: true
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🛫 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🛫 Restore Gradle Cache
+        uses: actions/cache/restore@v4
+        with:
+          path: ~/.gradle/caches
+          key: ${{ inputs.build-action }} 
+
+      - name: ⛅ Upload build
+        uses: actions/upload-artifact@v3
+        with:
+          name: cache
+          path: ~/.gradle/caches
