@@ -19,4 +19,4 @@ jobs:
         uses: actions/attest-build-provenance@v2
         with:
           subject-name: 'ReVanced Patches something something'
-          subject-path: 'patches-!(*sources*|*javadoc*).rvp'
+          subject-path: 'patches-*.rvp'
