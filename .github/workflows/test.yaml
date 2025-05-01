@@ -1,0 +1,22 @@
+name: Release
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - dev
+jobs:
+  release:
+    name: Release
+    permissions:
+      contents: write
+      packages: write
+      id-token: write
+      attestations: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Attest
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-name: 'ReVanced Patches something something'
+          subject-path: patches-!(*sources*|*javadoc*).rvp
