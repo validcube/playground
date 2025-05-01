@@ -1,4 +1,4 @@
-name: Release
+name: Releasefdsafsad
 on:
   workflow_dispatch:
   push:
